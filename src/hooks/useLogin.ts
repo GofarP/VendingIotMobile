@@ -1,48 +1,48 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { authService } from "../services/authService";
 import { useAuthStore } from "../store/useAuthStore";
 import { useSnackbar } from "../components/SnackbarContext";
-
 
 export function useLogin() {
     const { showSnackbar } = useSnackbar();
     const loginAction = useAuthStore((s) => s.loginAction);
 
     const [form, setForm] = useState({ email: "", password: "" });
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
 
-    const handleLogin = async () => {
-        setIsSubmitting(true);
-        setServerErrors({});
+    const mutation = useMutation({
+        mutationFn: () => authService.login(form.email, form.password),
 
-        try {
-            const res = await authService.login(form.email, form.password);
+        onSuccess: (res) => {
             loginAction(res);
             showSnackbar(`Selamat datang, ${res.fullName}`, "success");
-        } catch (err: any) {
+        },
+        onError: (err: any) => {
             const responseData = err.response?.data;
 
             if (responseData?.errors) {
                 setServerErrors(responseData.errors);
-                showSnackbar("Validasi gagal, periksa input Anda", "error");
+                showSnackbar("Validasi gagal, periksa input Anda","error");
+            }else if(responseData?.message){
+                showSnackbar(responseData.message,"error");
+            }else{
+                showSnackbar("Terjadi kesalahan pada server","error");
             }
-            else if (responseData?.message) {
-                showSnackbar(responseData.message, "error");
-            }
-            else {
-                showSnackbar("Terjadi kesalahan pada server", "error");
-            }
-        } finally {
-            setIsSubmitting(false);
+        },
+        onMutate:()=>{
+            setServerErrors({});
         }
-    };
 
-    return {
+    });
+    
+    return{
         form,
         setForm,
-        isSubmitting,
+        isSubmitting:mutation.isPending,
         serverErrors,
-        handleLogin,
-    };
+        handleLogin:mutation.mutate
+    }
+
+
 }
