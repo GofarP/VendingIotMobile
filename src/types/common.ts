@@ -4,3 +4,10 @@ export interface ActionResponse<T=any>{
     data?:T;
     errors?:Record<string, string[]>;
 }
+
+export interface Pagination{
+    totalCount:number;
+    pageSize:number;
+    currentPage:number;
+    totalPages:number;
+}

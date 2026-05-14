@@ -8,10 +8,13 @@ import {
     ScrollView 
 } from 'react-native';
 import { useAuthStore } from '../store/useAuthStore';
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const Home = () => {
+const HomeScreen = () => {
     const { auth, logout } = useAuthStore();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const navigation = useNavigation<StackNavigationProp<any>>();
 
     const handleLogout = async () => {
         setIsLoggingOut(true);
@@ -24,9 +27,24 @@ const Home = () => {
         }
     };
 
-    // Helper untuk merender item menu
-    const MenuItem = ({ icon, title, colorClass }: { icon: string, title: string, colorClass: string }) => (
-        <Pressable className="bg-white w-[48%] p-5 rounded-[30px] mb-4 shadow-sm border border-gray-100 flex-col items-start active:bg-gray-50">
+  
+    const MenuItem = ({ 
+        icon, 
+        title, 
+        colorClass, 
+        onPress, 
+        isFullWidth = false 
+    }: { 
+        icon: string, 
+        title: string, 
+        colorClass: string, 
+        onPress?: () => void,
+        isFullWidth?: boolean 
+    }) => (
+        <Pressable 
+            onPress={onPress}
+            className={`bg-white ${isFullWidth ? 'w-full' : 'w-[48%]'} p-5 rounded-[30px] mb-4 shadow-sm border border-gray-100 flex-col items-start active:bg-gray-50`}
+        >
             <View className={`w-10 h-10 ${colorClass} rounded-2xl items-center justify-center mb-3`}>
                 <Text className="text-lg">{icon}</Text>
             </View>
@@ -34,7 +52,6 @@ const Home = () => {
         </Pressable>
     );
 
-    // Helper untuk header kategori
     const CategoryHeader = ({ title }: { title: string }) => (
         <Text className="text-blue-600 font-black text-[10px] uppercase tracking-[2px] mb-4 mt-6 ml-1">
             {title}
@@ -65,33 +82,45 @@ const Home = () => {
                     </View>
                 </View>
 
-                {/* 2. Menu Sections Berdasarkan image_7f56a2.png */}
+                {/* 2. Menu Sections */}
                 <View className="px-6 mt-4">
                     
                     {/* KATEGORI: UTAMA */}
                     <CategoryHeader title="Utama" />
-                    <MenuItem icon="📱" title="Dashboard" colorClass="bg-blue-100" />
+                    <MenuItem 
+                        icon="📱" 
+                        title="Dashboard" 
+                        colorClass="bg-blue-100" 
+                        isFullWidth={true}
+                        onPress={() => navigation.navigate("Dashboard")} 
+                    />
 
                     {/* KATEGORI: DATA MASTER */}
                     <CategoryHeader title="Data Master" />
                     <View className="flex-row flex-wrap justify-between">
-                        <MenuItem icon="👥" title="Employee" colorClass="bg-indigo-100" />
-                        <MenuItem icon="🏢" title="Department" colorClass="bg-purple-100" />
-                        <MenuItem icon="🛡️" title="Perm. Category" colorClass="bg-cyan-100" />
-                        <MenuItem icon="✅" title="Permission" colorClass="bg-teal-100" />
-                        <MenuItem icon="🔑" title="Role" colorClass="bg-amber-100" />
-                        <MenuItem icon="📁" title="Item Category" colorClass="bg-rose-100" />
+                        <MenuItem icon="👥" title="Employee" colorClass="bg-indigo-100" onPress={() => navigation.navigate("Employee")} />
+                        <MenuItem icon="🏢" title="Department" colorClass="bg-purple-100" onPress={() => navigation.navigate("Department")} />
+                        <MenuItem icon="🛡️" title="Perm. Category" colorClass="bg-cyan-100" onPress={() => navigation.navigate("PermCategory")} />
+                        <MenuItem icon="✅" title="Permission" colorClass="bg-teal-100" onPress={() => navigation.navigate("Permission")} />
+                        <MenuItem icon="🔑" title="Role" colorClass="bg-amber-100" onPress={() => navigation.navigate("Role")} />
+                        <MenuItem icon="📁" title="Item Category" colorClass="bg-rose-100" onPress={() => navigation.navigate("ItemCategory")} />
                     </View>
 
                     {/* KATEGORI: ITEM */}
                     <CategoryHeader title="Item" />
-                    <MenuItem icon="📦" title="Item" colorClass="bg-orange-100" />
+                    <MenuItem 
+                        icon="📦" 
+                        title="Item" 
+                        colorClass="bg-orange-100" 
+                        isFullWidth={true}
+                        onPress={() => navigation.navigate("Item")} 
+                    />
 
                     {/* KATEGORI: VENDING MACHINE */}
                     <CategoryHeader title="Vending Machine" />
                     <View className="flex-row flex-wrap justify-between">
-                        <MenuItem icon="📟" title="Vending Machine" colorClass="bg-emerald-100" />
-                        <MenuItem icon="➕" title="Vending Item" colorClass="bg-sky-100" />
+                        <MenuItem icon="📟" title="Vending Machine" colorClass="bg-emerald-100" onPress={() => navigation.navigate("VendingMachine")} />
+                        <MenuItem icon="➕" title="Vending Item" colorClass="bg-sky-100" onPress={() => navigation.navigate("VendingItem")} />
                     </View>
 
                 </View>
@@ -121,4 +150,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default HomeScreen;

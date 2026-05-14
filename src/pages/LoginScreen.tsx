@@ -11,7 +11,7 @@ import {
 import Input from "../components/Input";
 import { useLogin } from "../hooks/useLogin";
 
-const Login = () => {
+const LoginScreen = () => {
     const {
         form,
         setForm,
@@ -88,4 +88,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginScreen;
