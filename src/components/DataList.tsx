@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, FlatList, Text } from 'react-native';
 import { Search } from 'lucide-react-native';
+
 interface SearchableListProps {
   data: any[];
   renderItem: ({ item }: { item: any }) => React.ReactElement;
@@ -20,6 +21,22 @@ const DataList = ({
   onRefresh,
   placeholder = 'search...',
 }: SearchableListProps) => {
+  const [localSearch, setLocalSearch] = useState(searchValue);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      onSearchChange(localSearch);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [localSearch]);
+
+  useEffect(() => {
+    setLocalSearch(searchValue);
+  }, [searchValue]);
+
   return (
     <View className="flex-1 px-4">
       <View className="mx-2 mt-[-25px] flex-row items-center bg-white px-4 rounded-2xl border border-slate-200 shadow-sm h-14">
@@ -28,14 +45,14 @@ const DataList = ({
           className="flex-1 text-slate-700 font-medium ml-2"
           placeholder={placeholder}
           placeholderTextColor="#cbd5e1"
-          value={searchValue}
-          onChangeText={onSearchChange}
+          value={localSearch} 
+          onChangeText={setLocalSearch}
         />
       </View>
       <FlatList
         contentContainerStyle={{ paddingTop: 20, paddingBottom: 120 }}
         data={data}
-        keyExtractor={item => String(item.id)}
+        keyExtractor={(item, index) => item.id?.toString() || index.toString()}
         showsVerticalScrollIndicator={false}
         onRefresh={onRefresh}
         refreshing={isLoading}

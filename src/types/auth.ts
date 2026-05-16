@@ -12,6 +12,8 @@ export interface AuthData {
 export interface AuthState {
   auth: AuthData | null;
   isAuthenticated: boolean;
+  _hasHydrated:boolean;
+  setHasHydrated: (state: boolean) => void;
   loginAction: (data: AuthData) => void;
   logout: () => void;
   hasPermission: (permission: string) => boolean;

@@ -36,11 +36,13 @@ export function useDepartmentActions() {
                 : departmentService.create(data);
         },
         onMutate: () => setServerErrors({}),
-        onSuccess: (res) => {
-            if (res.success) {
-                queryClient.invalidateQueries({ queryKey: ["departments"] });
-                showSnackbar(res.message, "success");
-                if (selectedId && res.data) setSelectedDepartment(res.data);
+        onSuccess: async (res) => {
+            await queryClient.invalidateQueries({ queryKey: ["departments"] });
+            
+            showSnackbar(res.message || "Data berhasil disimpan", "success");
+
+            if (selectedId && res.data) {
+                setSelectedDepartment(res.data);
             }
         },
         onError: (err: any) => {
@@ -56,11 +58,14 @@ export function useDepartmentActions() {
 
     const deleteMutation = useMutation({
         mutationFn: (id: number) => departmentService.delete(id),
-        onSuccess: (res) => {
-            queryClient.invalidateQueries({ queryKey: ["departments"] });
-            showSnackbar(res.message, "success");
+        onSuccess: async (res) => {
+            await queryClient.invalidateQueries({ queryKey: ["departments"] });
+            showSnackbar(res.message || "Data berhasil dihapus", "success");
         },
-        onError: () => showSnackbar("Gagal menghapus", "error")
+        onError: (err: any) => {
+            const msg = err.response?.data?.message || "Gagal menghapus data";
+            showSnackbar(msg, "error");
+        }
     });
 
     return {
@@ -68,7 +73,7 @@ export function useDepartmentActions() {
         setForm,
         serverErrors,
         selectedId,
-        openModal, // Eksport fungsi ini ke Screen
+        openModal,
         isSubmitting: mutation.isPending,
         isDeleting: deleteMutation.isPending,
         handleAction: mutation.mutate,

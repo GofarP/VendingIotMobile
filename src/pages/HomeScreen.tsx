@@ -37,6 +37,7 @@ interface MenuItemProps {
   isFullWidth?: boolean;
 }
 
+
 const MenuItem = ({
   icon: Icon,
   title,
@@ -93,7 +94,6 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 60 }}
       >
-        {/* 1. Header Profile Section */}
         <View className="px-8 pt-12 pb-14 bg-blue-600 rounded-b-[50px] shadow-2xl shadow-blue-300">
           <View className="flex-row justify-between items-center">
             <View className="flex-1 mr-4">
@@ -104,6 +104,7 @@ const HomeScreen = () => {
                 className="text-white text-3xl font-black mt-1 tracking-tight"
                 numberOfLines={1}
               >
+                
                 {auth?.fullName?.split(' ')[0] || 'Petugas'}
               </Text>
               <View className="bg-white/20 self-start px-4 py-1.5 rounded-full mt-3 border border-white/30">

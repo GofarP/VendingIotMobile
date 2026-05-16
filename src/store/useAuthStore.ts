@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { AuthState, AuthData } from '../types/auth';
 import { SecureStorage } from '../services/secureStorage';
@@ -9,23 +9,29 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       auth: null,
       isAuthenticated: false,
+      _hasHydrated: false,
+      setHasHydrated: (state: boolean) => set({ _hasHydrated: state }),
 
-      loginAction: (data: AuthData) => set({ 
-        auth: data, 
-        isAuthenticated: true 
+      loginAction: (data: AuthData) => set({
+        auth: data,
+        isAuthenticated: true
       }),
 
-     logout: async () => {
+      logout: async () => {
         const currentAuth = get().auth;
 
-        if (currentAuth?.refreshToken) {
-          await authService.logout(currentAuth.refreshToken);
+        try {
+          if (currentAuth?.refreshToken) {
+            await authService.logout(currentAuth.refreshToken);
+          }
+        } catch (error) {
+          console.error("Logout API failed", error);
+        } finally {
+          set({
+            auth: null,
+            isAuthenticated: false
+          });
         }
-
-        set({ 
-          auth: null, 
-          isAuthenticated: false 
-        });
       },
 
       hasPermission: (permission: string) => {
@@ -34,8 +40,11 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'vending-auth-storage',
-      storage: createJSONStorage(() => SecureStorage),
+      name:'vending-auth-storage',
+      storage:createJSONStorage(()=>SecureStorage),
+      onRehydrateStorage:()=>(state)=>{
+        state?.setHasHydrated(true);
+      }
     }
   )
-);
+)

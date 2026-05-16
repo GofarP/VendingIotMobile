@@ -1,7 +1,5 @@
 import api from "./api";
-
 import { ActionResponse } from "../types/common";
-
 import {
     Department,
     DepartmentListResponse,
@@ -12,9 +10,9 @@ export const departmentService = {
         const response = await api.get('/department', {
             params: { page, pageSize, search: search || undefined }
         });
-        console.log(response.data)
         return response.data;
     },
+
     getById: async (id: number): Promise<Department> => {
         const response = await api.get(`/department/${id}`);
         return response.data;
@@ -22,7 +20,7 @@ export const departmentService = {
 
     create: async (data: Department): Promise<ActionResponse<Department>> => {
         const response = await api.post('/department', data);
-        return response.data;
+        return response.data; 
     },
 
     update: async (id: number, data: Department): Promise<ActionResponse<Department>> => {
@@ -30,7 +28,7 @@ export const departmentService = {
         return response.data;
     },
 
-    delete: async (id: number): Promise<ActionResponse> => {
+    delete: async (id: number): Promise<ActionResponse<any>> => {
         const response = await api.delete(`/department/${id}`);
         return response.data;
     }

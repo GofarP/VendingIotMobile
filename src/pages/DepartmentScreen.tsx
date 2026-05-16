@@ -12,6 +12,7 @@ import { Department } from '../types/department';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Snackbar from '../components/Snackbar';
 import { useSnackbar } from '../components/SnackbarContext';
+import { Pencil, Trash2 } from 'lucide-react-native';
 
 export default function DepartmentScreen() {
   const { showSnackbar } = useSnackbar();
@@ -73,20 +74,23 @@ export default function DepartmentScreen() {
             </View>
 
             {/* Tombol Aksi Langsung */}
-            <View className="flex-row items-center space-x-2">
+            <View className="flex-row items-center space-x-3">
+              {/* Tombol EDIT */}
               <TouchableOpacity
                 onPress={() => handleOpenModal(item)}
-                className="w-10 h-10 bg-blue-50 rounded-full items-center justify-center"
+                className="w-10 h-10 bg-yellow-50 rounded-full items-center justify-center border border-yellow-100"
+                activeOpacity={0.6}
               >
-                <Text className="text-blue-600 font-bold text-[10px]">
-                  EDIT
-                </Text>
+                <Pencil size={18} className='text-yellow-400' strokeWidth={2.5} />
               </TouchableOpacity>
+
+              {/* Tombol DELETE */}
               <TouchableOpacity
                 onPress={() => handleDelete(item.id!)}
-                className="w-10 h-10 bg-red-50 rounded-full items-center justify-center"
+                className="w-10 h-10 bg-red-50 rounded-full items-center justify-center border border-red-100"
+                activeOpacity={0.6}
               >
-                <Text className="text-red-500 font-bold text-[10px]">DEL</Text>
+                <Trash2 size={18} color="#ef4444" strokeWidth={2.5} />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
