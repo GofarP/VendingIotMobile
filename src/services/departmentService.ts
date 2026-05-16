@@ -16,22 +16,22 @@ export const departmentService = {
         return response.data;
     },
     getById: async (id: number): Promise<Department> => {
-        const response = await api.get(`/api/department/${id}`);
+        const response = await api.get(`/department/${id}`);
         return response.data;
     },
 
     create: async (data: Department): Promise<ActionResponse<Department>> => {
-        const response = await api.post('/api/department', data);
+        const response = await api.post('/department', data);
         return response.data;
     },
 
     update: async (id: number, data: Department): Promise<ActionResponse<Department>> => {
-        const response = await api.put(`/api/department/${id}`, data);
+        const response = await api.put(`/department/${id}`, data);
         return response.data;
     },
 
     delete: async (id: number): Promise<ActionResponse> => {
-        const response = await api.delete(`/api/department/${id}`);
+        const response = await api.delete(`/department/${id}`);
         return response.data;
     }
 }

@@ -14,9 +14,8 @@ export function useDepartmentActions() {
     const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
     const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
-    // --- LOGIKA OPEN MODAL (Sekarang di Hook) ---
     const openModal = (item?: Department) => {
-        setServerErrors({}); // Reset error setiap kali buka modal
+        setServerErrors({}); 
         if (item) {
             setSelectedId(item.id);
             setForm({ 
