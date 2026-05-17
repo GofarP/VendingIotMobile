@@ -1,22 +1,23 @@
-import { useState } from "react"
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { permissionCategoryService } from "../../services/permissionCategoryService";
+import { itemCategoryService } from "../../services/itemCategoryService";
 import { useSnackbar } from "../../components/SnackbarContext";
-import { usePermissionCategoryStore } from "../../store/usePermissionCategoryStore";
-import { PermissionCategory } from "../../types/permissionCategory";
+import { useItemCategoryStore } from "../../store/useItemCategoryStore";
+import { ItemCategory } from "../../types/ItemCategory";
 import { Alert } from "react-native";
+import { usePermissionCategoryStore } from "../../store/usePermissionCategoryStore";
 
-export function usePermissionCategoryActions() {
+export function useItemCategoryActions() {
     const { showSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
 
-    const setSelectedPermissionCategory = usePermissionCategoryStore((s) => s.setSelectedPermissionCategory);
+    const [form, setForm] = useState<ItemCategory>({ id: 0, name: "", description: "" });
 
-    const [form, setForm] = useState<PermissionCategory>({ id: 0, name: "", description: "" });
+    const setSelectedItemCategory = useItemCategoryStore((s) => s.setSelectedItemCategory);
     const [serverErrors, setServerErrors] = useState<Record<string, string[]>>({});
     const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
-    const openModal = (item?: PermissionCategory) => {
+    const openModal = (item?: ItemCategory) => {
         setServerErrors({});
         if (item) {
             setSelectedId(item.id);
@@ -24,26 +25,26 @@ export function usePermissionCategoryActions() {
                 id: item.id,
                 name: item.name,
                 description: item.description
-            });
+            })
         } else {
             setSelectedId(undefined);
             setForm({ id: 0, name: '', description: '' });
         }
-    };
+    }
 
     const mutation = useMutation({
-        mutationFn: (data: PermissionCategory) => {
+        mutationFn: (data: ItemCategory) => {
             return selectedId
-                ? permissionCategoryService.update(selectedId, data)
-                : permissionCategoryService.create(data);
+                ? itemCategoryService.update(selectedId, data)
+                : itemCategoryService.create(data);
         },
         onMutate: () => setServerErrors({}),
         onSuccess: async (res) => {
-            await queryClient.invalidateQueries({ queryKey: ["permissioncategories"] });
-            showSnackbar(res.message || "Data berhasil disimpan","success");
+            await queryClient.invalidateQueries({ queryKey: ["itemcategories"] });
+            showSnackbar(res.message || "Data berhasil disimpan", "success");
 
             if (selectedId && res.data) {
-                setSelectedPermissionCategory(res.data);
+                setSelectedItemCategory(res.data);
             }
         },
         onError: (err: any) => {
@@ -58,33 +59,33 @@ export function usePermissionCategoryActions() {
     });
 
     const deleteMutation = useMutation({
-        mutationFn: (id: number) => permissionCategoryService.delete(id),
+        mutationFn: (id: number) => itemCategoryService.delete(id),
         onSuccess: async (res) => {
             await queryClient.invalidateQueries({ queryKey: ["permissioncategories"] });
             showSnackbar(res.message || "Data berhasil dihapus", "success");
         },
-        onError:(err:any)=>{
-            const msg=err.response?.data.message|| "Gagal menghapus data";
-            showSnackbar(msg,'error');
+        onError: (err: any) => {
+            const msg = err.response?.data.message || "Gagal menghapus data";
+            showSnackbar(msg, 'error');
         }
     });
 
-    const handleDelete=(id:number)=>{
+    const handleDelete = (id: number) => {
         Alert.alert(
             "Konfirmasi Hapus",
-            "Apakah Anda yakin ingin menghapus permission ini?",
+            "Apakah Anda yakin ingin menghapus item category ini?",
             [
-                {text:"Batal",style:'cancel'},
+                { text: "Batal", style: 'cancel' },
                 {
-                    text:"Hapus",
-                    style:"destructive",
-                    onPress:()=>deleteMutation.mutate(id)
+                    text: "Hapus",
+                    style: "destructive",
+                    onPress: () => deleteMutation.mutate(id)
                 }
             ]
         )
     }
 
-    return{
+     return{
         form,
         setForm,
         serverErrors,
@@ -95,4 +96,6 @@ export function usePermissionCategoryActions() {
         handleAction:mutation.mutate,
         handleDelete
     }
+
+
 }

@@ -4,6 +4,7 @@ import { departmentService } from "../../services/departmentService";
 import { useSnackbar } from "../../components/SnackbarContext";
 import { useDepartmentStore } from "../../store/useDepartmentStore";
 import { Department } from "../../types/department";
+import { Alert } from "react-native";
 
 export function useDepartmentActions() {
     const { showSnackbar } = useSnackbar();
@@ -15,13 +16,13 @@ export function useDepartmentActions() {
     const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
 
     const openModal = (item?: Department) => {
-        setServerErrors({}); 
+        setServerErrors({});
         if (item) {
             setSelectedId(item.id);
-            setForm({ 
-                id: item.id, 
-                name: item.name, 
-                description: item.description 
+            setForm({
+                id: item.id,
+                name: item.name,
+                description: item.description
             });
         } else {
             setSelectedId(undefined);
@@ -31,14 +32,14 @@ export function useDepartmentActions() {
 
     const mutation = useMutation({
         mutationFn: (data: Department) => {
-            return selectedId 
-                ? departmentService.update(selectedId, data) 
+            return selectedId
+                ? departmentService.update(selectedId, data)
                 : departmentService.create(data);
         },
         onMutate: () => setServerErrors({}),
         onSuccess: async (res) => {
             await queryClient.invalidateQueries({ queryKey: ["departments"] });
-            
+
             showSnackbar(res.message || "Data berhasil disimpan", "success");
 
             if (selectedId && res.data) {
@@ -68,6 +69,21 @@ export function useDepartmentActions() {
         }
     });
 
+    const handleDelete = (id: number) => {
+        Alert.alert(
+            "Konfirmasi Hapus",
+            "Apakah Anda yakin ingin menghapus permission ini?",
+            [
+                { text: "Batal", style: "cancel" },
+                {
+                    text: "Hapus",
+                    style: "destructive",
+                    onPress: () => deleteMutation.mutate(id)
+                }
+            ]
+        );
+    };
+
     return {
         form,
         setForm,
@@ -77,6 +93,6 @@ export function useDepartmentActions() {
         isSubmitting: mutation.isPending,
         isDeleting: deleteMutation.isPending,
         handleAction: mutation.mutate,
-        handleDelete: deleteMutation.mutate
+        handleDelete
     };
 }

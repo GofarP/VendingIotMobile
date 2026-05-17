@@ -134,16 +134,6 @@ const HomeScreen = () => {
 
         {/* 2. Menu Sections */}
         <View className="px-6 -mt-6">
-          {/* KATEGORI: UTAMA */}
-          <CategoryHeader title="Utama" />
-          <MenuItem
-            icon={LayoutDashboard}
-            title="Dashboard"
-            colorClass="bg-blue-50"
-            iconColor="#2563eb"
-            isFullWidth={true}
-            onPress={() => navigation.navigate('Dashboard')}
-          />
 
           {/* KATEGORI: DATA MASTER */}
           <CategoryHeader title="Data Master" />

@@ -5,6 +5,7 @@ import { permissionService } from "../../services/permissionService";
 import { useSnackbar } from "../../components/SnackbarContext";
 import { usePermissionStore } from "../../store/usePermission";
 import { Permission } from "../../types/permission";
+import { Alert } from "react-native";
 
 type UpsertPermissionRequest = Omit<Permission, 'id' | 'permissionCategory'>;
 
@@ -83,6 +84,21 @@ export function usePermissionActions() {
         }
     });
 
+     const handleDelete=(id:number)=>{
+            Alert.alert(
+                "Konfirmasi Hapus",
+                "Apakah Anda yakin ingin menghapus permission category ini?",
+                [
+                    {text:"Batal",style:'cancel'},
+                    {
+                        text:"Hapus",
+                        style:"destructive",
+                        onPress:()=>deleteMutation.mutate(id)
+                    }
+                ]
+            )
+        }
+
     return {
         form,
         setForm,
@@ -94,6 +110,6 @@ export function usePermissionActions() {
         isSubmitting: mutation.isPending,
         isDeleting: deleteMutation.isPending,
         handleAction: mutation.mutate,
-        handleDelete: deleteMutation.mutate
+        handleDelete
     };
 }

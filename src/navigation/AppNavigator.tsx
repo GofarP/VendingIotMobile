@@ -8,6 +8,7 @@ import HomeScreen from "../pages/HomeScreen";
 import DepartmentScreen from "../pages/DepartmentScreen";
 import PermissionCategoryScreen from "../pages/PermissionCategoryScreen";
 import PermissionScreen from "../pages/PermissionScreen";
+import ItemCategoryScreen from "../pages/ItemCategoryScreen";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,7 @@ const AppNavigator = () => {
                         <Stack.Screen name="Department" component={DepartmentScreen} />
                         <Stack.Screen name="PermissionCategory" component={PermissionCategoryScreen}/>
                         <Stack.Screen name="Permission" component={PermissionScreen}/>
+                        <Stack.Screen name="ItemCategory" component={ItemCategoryScreen}/>
                     </>
                 ) : (
                     <Stack.Screen name="Login" component={LoginScreen} />
