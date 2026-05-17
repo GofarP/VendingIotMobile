@@ -182,18 +182,16 @@ const HomeScreen = () => {
             />
           </View>
 
-          {/* KATEGORI: ITEM */}
           <CategoryHeader title="Inventory" />
           <MenuItem
             icon={Box}
-            title="Item Master"
+            title="Item Inventory"
             colorClass="bg-orange-50"
             iconColor="#ea580c"
             isFullWidth={true}
             onPress={() => navigation.navigate('Item')}
           />
 
-          {/* KATEGORI: VENDING MACHINE */}
           <CategoryHeader title="Vending Machine" />
           <View className="flex-row flex-wrap justify-between">
             <MenuItem

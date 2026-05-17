@@ -113,26 +113,20 @@ export default function PermissionScreen() {
                     label="Permission Category"
                     placeholder="Cari kategori..."
                     loadOptions={permissionService.getPermissionCategories}
-
                     selectedValue={form.permissionCategory?.name}
-
                     onSelect={(item) => {
                         setForm({
                             ...form,
                             permissionCategoryId: Number(item.id),
-
                             permissionCategory: {
                                 id: Number(item.id),
                                 name: item.name
-                            } as any 
+                            } as any
                         });
                     }}
+                    // Masukkan error di sini, AsyncSelect akan otomatis berwarna merah dan muncul teks error
+                    error={serverErrors.PermissionCategoryId?.[0]}
                 />
-                {serverErrors.PermissionCategoryId && (
-                    <Text className="text-red-500 text-xs ml-1 -mt-2 mb-4">
-                        {serverErrors.PermissionCategoryId[0]}
-                    </Text>
-                )}
 
             </AppModal>
         </PageWrapper>

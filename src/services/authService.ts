@@ -9,7 +9,7 @@ export const authService = {
     logout: async (refreshToken: string | null): Promise<void> => {
         if (!refreshToken) return;
         try {
-            await api.post("/api/auth/logout", {
+            await api.post("/auth/logout", {
                 refreshToken: refreshToken
             })
         } catch (error) {
