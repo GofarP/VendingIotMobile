@@ -6,6 +6,8 @@ import { useAuthStore } from "../store/useAuthStore";
 import LoginScreen from "../pages/LoginScreen";
 import HomeScreen from "../pages/HomeScreen";
 import DepartmentScreen from "../pages/DepartmentScreen";
+import PermissionCategoryScreen from "../pages/PermissionCategoryScreen";
+import PermissionScreen from "../pages/PermissionScreen";
 
 const Stack = createStackNavigator();
 
@@ -28,6 +30,8 @@ const AppNavigator = () => {
                     <>
                         <Stack.Screen name="Home" component={HomeScreen} />
                         <Stack.Screen name="Department" component={DepartmentScreen} />
+                        <Stack.Screen name="PermissionCategory" component={PermissionCategoryScreen}/>
+                        <Stack.Screen name="Permission" component={PermissionScreen}/>
                     </>
                 ) : (
                     <Stack.Screen name="Login" component={LoginScreen} />

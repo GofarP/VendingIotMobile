@@ -6,8 +6,8 @@ import AppModal from '../components/AppModal';
 import FloatingActionButton from '../components/FloatingActionButton';
 import Input from '../components/Input';
 
-import { useGetDepartments } from '../hooks/useDepartmentQuery';
-import { useDepartmentActions } from '../hooks/useDepartmentAction';
+import { useGetDepartments } from '../hooks/Department/useDepartmentQuery';
+import { useDepartmentActions } from '../hooks/Department/useDepartmentAction';
 import { Department } from '../types/department';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import Snackbar from '../components/Snackbar';
@@ -69,7 +69,7 @@ export default function DepartmentScreen() {
                 className="text-slate-400 text-[11px] mt-0.5"
                 numberOfLines={1}
               >
-                {item.description || 'General Unit'}
+                {item.description || '-'}
               </Text>
             </View>
 

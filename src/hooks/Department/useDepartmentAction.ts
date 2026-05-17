@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { departmentService } from "../services/departmentService";
-import { useSnackbar } from "../components/SnackbarContext";
-import { useDepartmentStore } from "../store/useDepartmentStore";
-import { Department } from "../types/department";
+import { departmentService } from "../../services/departmentService";
+import { useSnackbar } from "../../components/SnackbarContext";
+import { useDepartmentStore } from "../../store/useDepartmentStore";
+import { Department } from "../../types/department";
 
 export function useDepartmentActions() {
     const { showSnackbar } = useSnackbar();

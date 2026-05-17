@@ -167,7 +167,7 @@ const HomeScreen = () => {
               title="Perm. Category"
               colorClass="bg-cyan-50"
               iconColor="#0891b2"
-              onPress={() => navigation.navigate('PermCategory')}
+              onPress={() => navigation.navigate('PermissionCategory')}
             />
             <MenuItem
               icon={CheckCircle2}
